@@ -17,7 +17,7 @@ type Athlete struct {
 func setUpDatabase() {
 	db, err := sql.Open("sqlite3", "./athletes.db")
 	if err != nil {
-		log.Datal("Error opening database: ", err)
+		log.Fatal("Error opening database: ", err)
 	}
 	defer db.Close()
 
