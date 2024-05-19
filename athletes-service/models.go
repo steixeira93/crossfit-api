@@ -51,7 +51,13 @@ func getAllAthletes() ([]Athlete, error) {
 	athletes := []Athlete{}
 	for rows.Next() {
 		var athlete Athlete
-		err := rows.Scan(&athlete.ID, &athlete.FirstName, &athlete.LastName, &athlete.Age, &athlete.Team, &athlete.Box)
+		err := rows.Scan(
+			&athlete.ID,
+			&athlete.FirstName,
+			&athlete.LastName,
+			&athlete.Age,
+			&athlete.Team,
+			&athlete.Box)
 		if err != nil {
 			return nil, err
 		}
