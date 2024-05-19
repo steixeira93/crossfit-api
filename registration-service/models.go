@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -61,9 +62,48 @@ func addRegistration(registration Registration) error {
 	}
 	defer db.Close()
 
+	// TODO: Here I need to implement the logic to check if
+	// the athlete is qualified based on criteria such as age, skill level, etc.
+
+	// If the athlete is qualified, then we can proceed to add the registration
 	_, err = db.Exec("INSERT INTO registrations (id, athlete_id, event_id) VALUES (?, ?, ?)", registration.ID, registration.AthleteID, registration.EventID)
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
+func updateRegistration(registrationID, newEventID int) error {
+	db, err := sql.Open("sqlite3", "./registrations.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Exec("UPDATE registrations SET event_id = ? WHERE id = ?", newEventID, registrationID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func cancelRegistration(registrationID int) error {
+	db, err := sql.Open("sqlite3", "./registrations.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Exec("DELETE FROM registrations WHERE id = ?", registrationID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func generateConfirmation(athleteID, eventID int) string {
+	confirmation := fmt.Sprintf("Confirmation of registration for the athlete %d in the event %d", athleteID, eventID)
+	return confirmation
+}
+
+// TODO: create a function to payment processing
